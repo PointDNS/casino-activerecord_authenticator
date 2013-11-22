@@ -24,11 +24,18 @@ class CASino::ActiveRecordAuthenticator
 
   def validate(username, password)
     @model.verify_active_connections!
-    user = @model.send("find_by_#{@options[:username_column]}!", username)
+    user = @model.send("find_by_#{@options[:username_column]}", username)
+    user ||= @model.send("find_by_#{@options[:username_column_1]}", username)
+    user ||= @model.send("find_by_#{@options[:username_column_2]}", username)
+    user ||= @model.send("find_by_#{@options[:username_column_3]}!", username)
     password_from_database = user.send(@options[:password_column])
 
     if valid_password?(password, password_from_database)
-      { username: user.send(@options[:username_column]), extra_attributes: extra_attributes(user) }
+      { username: user.send(@options[:username_column]),
+        username_1: user.send(@options[:username_column_1]),
+        username_2: user.send(@options[:username_column_2]),
+        username_3: user.send(@options[:username_column_3]),
+        extra_attributes: extra_attributes(user) }
     else
       false
     end
