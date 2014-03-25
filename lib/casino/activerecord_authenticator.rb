@@ -57,8 +57,17 @@ class CASino::ActiveRecordAuthenticator
   end
 
   def valid_password_with_bcrypt?(password, password_from_database)
+    valid_password_with_bcrypt_without_pepper?(password, password_from_database) ||
+      valid_password_with_bcrypt_with_pepper?(password, password_from_database)
+  end
+
+  def valid_password_with_bcrypt_with_pepper?(password, password_from_database)
     password_with_pepper = password + @options[:pepper].to_s
     BCrypt::Password.new(password_from_database) == password_with_pepper
+  end
+
+  def valid_password_with_bcrypt_without_pepper?(password, password_from_database)
+    BCrypt::Password.new(password_from_database) == password
   end
 
   def valid_password_with_unix_crypt?(password, password_from_database)
