@@ -50,7 +50,6 @@ class CASino::ActiveRecordAuthenticator
     user ||= @model.send("find_by_#{@options[:username_column_1]}", username)
     user ||= @model.send("find_by_#{@options[:username_column_2]}", username)
     user ||= @model.send("find_by_#{@options[:username_column_3]}!", username)
-    password_from_database = user.send(@options[:password_column])
 
     if user
       { username: user.send(@options[:username_column]),
