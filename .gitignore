@@ -17,3 +17,5 @@ pkg
 
 /Gemfile.lock
 /*.iml
+
+.idea

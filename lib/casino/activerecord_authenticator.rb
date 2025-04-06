@@ -23,7 +23,7 @@ class CASino::ActiveRecordAuthenticator
   end
 
   def validate(username, password)
-    @model.clear_active_connections!
+    ActiveRecord::Base.connection_handler.clear_active_connections!
     user = @model.send("find_by_#{@options[:username_column]}", username)
     user ||= @model.send("find_by_#{@options[:username_column_1]}", username)
     user ||= @model.send("find_by_#{@options[:username_column_2]}", username)
@@ -45,7 +45,7 @@ class CASino::ActiveRecordAuthenticator
   end
 
   def validate_after_confirm(username)
-    @model.clear_active_connections!
+    ActiveRecord::Base.connection_handler.clear_active_connections!
     user = @model.send("find_by_#{@options[:username_column]}", username)
     user ||= @model.send("find_by_#{@options[:username_column_1]}", username)
     user ||= @model.send("find_by_#{@options[:username_column_2]}", username)
